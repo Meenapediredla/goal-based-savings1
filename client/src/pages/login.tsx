@@ -19,6 +19,7 @@ function Login() {
     setLoading(true);
     try {
       const res = await loginUser({ email, password });
+      console.log('Backend Response:',res.data)
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('name', res.data.name);
       navigate('/dashboard');
