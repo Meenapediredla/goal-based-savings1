@@ -1,0 +1,13 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  trigger-render:
+    runs-on: ubuntu-latest
+    if: ${{ vars.RENDER_DEPLOY_HOOK_URL != '' }}
+    steps:
+      - name: Trigger Render redeploy
+        run: curl -fsSL -X POST "${{ vars.RENDER_DEPLOY_HOOK_URL }}"
