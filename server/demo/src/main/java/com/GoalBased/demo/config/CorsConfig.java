@@ -1,4 +1,5 @@
-package com.GoalBased.demo.config; 
+package com.GoalBased.demo.config;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -12,9 +13,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                    .allowedOriginPatterns(
-                        "https://goal-based-savings.vercel.app"
-                    )
+                    .allowedOriginPatterns("https://goal-based-savings.vercel.app", "http://localhost:3000") 
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowedHeaders("*")
                     .allowCredentials(true);
