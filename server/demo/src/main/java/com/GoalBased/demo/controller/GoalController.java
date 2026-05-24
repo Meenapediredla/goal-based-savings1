@@ -14,7 +14,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/goals")
-@CrossOrigin("*")
 public class GoalController {
 
     @Autowired
