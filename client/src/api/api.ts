@@ -21,8 +21,8 @@ export const EXPENSE_CATEGORIES = [
 ];
 
 // --- Auth APIs ---
-export const registerUser = (data: any) => API.post("/users/register", data);
-export const loginUser = (data: any) => API.post("/auth/login", data);
+export const registerUser = (data: any) => API.post("/register", data);
+export const loginUser = (data: any) => API.post("/login", data);
 
 // --- Goal APIs ---
 export const createGoal = (data: any) => API.post("/goals", data);
