@@ -23,8 +23,14 @@ function Login() {
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('name', res.data.name);
       navigate('/dashboard');
-    } catch (error: any) {
-      alert(error.response?.status === 401? 'Invalid credentials. Please try again.' : 'Connection error. Please check your network.');
+    } catch (error: unknown) {
+      const err = error as { response?: { status?: number; data?: { error?: string } } };
+      const msg =
+        err.response?.data?.error ||
+        (err.response?.status === 401
+          ? "Invalid credentials. Please try again."
+          : "Cannot reach the server. Check that the API is deployed and VITE_API_URL is set correctly.");
+      alert(msg);
     } finally {
       setLoading(false);
     }

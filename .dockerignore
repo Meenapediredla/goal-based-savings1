@@ -1,0 +1,7 @@
+**/target
+**/.idea
+**/node_modules
+**/.git
+**/dist
+server/demo/src/main/resources/static
+*.log

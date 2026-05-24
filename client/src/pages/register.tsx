@@ -34,7 +34,10 @@ function Register() {
       navigate('/login');
     } catch (error: unknown) {
       const err = error as { response?: { data?: { error?: string } } };
-      alert(err.response?.data?.error || "Registration failed. Email might already exist.");
+      alert(
+        err.response?.data?.error ||
+          "Registration failed. Check API connection or use a different email."
+      );
     } finally {
       setLoading(false);
     }

@@ -1,0 +1,21 @@
+# IDE / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+# Logs
+*.log
+server/demo/server*.log
+
+# Client
+client/node_modules/
+client/dist/
+
+# Server build output (keep committed static/ for Render fallback)
+server/demo/target/
+
+# Env secrets
+.env
+.env.local
+client/.env

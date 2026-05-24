@@ -1,0 +1,23 @@
+# Render Blueprint — one web service (API + UI)
+# Dashboard: New > Blueprint > connect repo
+services:
+  - type: web
+    name: goal-based-savings
+    runtime: docker
+    dockerfilePath: ./server/demo/Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: APP_CORS_ORIGINS
+        value: "*"
+      - key: PORT
+        value: "8080"
