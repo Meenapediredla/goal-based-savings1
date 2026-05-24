@@ -1,8 +1,7 @@
-# Render Blueprint — one web service (API + UI)
-# Dashboard: New > Blueprint > connect repo
+# Render Blueprint — matches existing service URL goal-based-savings-backend.onrender.com
 services:
   - type: web
-    name: goal-based-savings
+    name: goal-based-savings-backend
     runtime: docker
     dockerfilePath: ./server/demo/Dockerfile
     dockerContext: .
@@ -18,6 +17,6 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: APP_CORS_ORIGINS
-        value: "*"
+        value: https://goal-based-savings.vercel.app,https://goal-based-savings-2npm57inq-goal-savings-meena.vercel.app,http://localhost:5173,*
       - key: PORT
         value: "8080"

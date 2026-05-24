@@ -1,40 +1,55 @@
-import axios from "axios";
-import { getApiBaseUrl } from "../config/apiBase";
+import axios, { type AxiosInstance } from "axios";
+import { getApiBaseUrl, loadRuntimeConfig, normalizeApiUrl } from "../config/apiBase";
 
-export const API_BASE_URL = getApiBaseUrl();
+let api: AxiosInstance | null = null;
 
-const API = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
-API.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+export function getAPI(): AxiosInstance {
+  if (!api) {
+    throw new Error("API not initialized. Call initAPI() first.");
   }
-  return config;
-});
+  return api;
+}
 
-API.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.code === "ERR_NETWORK") {
-      const hint = API_BASE_URL
-        ? `Backend: ${API_BASE_URL}`
-        : "Set VITE_API_URL to your Render API URL in Vercel/host env, then rebuild.";
-      alert(`Cannot reach the server. ${hint}`);
-    } else if (error.response?.status === 401 || error.response?.status === 403) {
-      localStorage.clear();
-      if (!window.location.pathname.includes("/login")) {
-        window.location.href = "/login";
-      }
+export async function initAPI(): Promise<string> {
+  await loadRuntimeConfig();
+  const baseURL = getApiBaseUrl();
+  api = axios.create({
+    baseURL,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  api.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
-    return Promise.reject(error);
-  }
-);
+    return config;
+  });
+
+  api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error.code === "ERR_NETWORK") {
+        const hint = baseURL
+          ? `Backend: ${baseURL}`
+          : "Check VITE_API_URL or public/config.json";
+        alert(`Cannot reach the server. ${hint}`);
+      } else if (error.response?.status === 401 || error.response?.status === 403) {
+        localStorage.clear();
+        if (!window.location.pathname.includes("/login")) {
+          window.location.href = "/login";
+        }
+      }
+      return Promise.reject(error);
+    }
+  );
+
+  return baseURL;
+}
+
+export const API_BASE_URL = () => normalizeApiUrl(getApiBaseUrl());
 
 export interface GoalPayload {
   goalName: string;
@@ -44,23 +59,23 @@ export interface GoalPayload {
 }
 
 export const registerUser = (data: { name?: string; email: string; password: string }) => {
-  return API.post("/users/register", data);
+  return getAPI().post("/users/register", data);
 };
 
 export const loginUser = (data: { email: string; password: string }) => {
-  return API.post("/auth/login", data);
+  return getAPI().post("/auth/login", data);
 };
 
 export const createGoal = (data: GoalPayload) => {
-  return API.post("/goals", data);
+  return getAPI().post("/goals", data);
 };
 
 export const getAllGoals = () => {
-  return API.get("/goals");
+  return getAPI().get("/goals");
 };
 
 export const deleteGoal = (id: number) => {
-  return API.delete(`/goals/${id}`);
+  return getAPI().delete(`/goals/${id}`);
 };
 
 export interface BudgetPlan {
@@ -86,7 +101,7 @@ export interface ExpensePayload {
 }
 
 export const getBudgetPlan = (month: string) => {
-  return API.get<BudgetPlan>("/budget/plan", { params: { month } });
+  return getAPI().get<BudgetPlan>("/budget/plan", { params: { month } });
 };
 
 export const updateBudgetPlan = (data: {
@@ -94,19 +109,19 @@ export const updateBudgetPlan = (data: {
   monthlyIncome: number;
   monthlyBudgetLimit: number;
 }) => {
-  return API.put<BudgetPlan>("/budget/plan", data);
+  return getAPI().put<BudgetPlan>("/budget/plan", data);
 };
 
 export const getExpenses = (month: string) => {
-  return API.get<Expense[]>("/budget/expenses", { params: { month } });
+  return getAPI().get<Expense[]>("/budget/expenses", { params: { month } });
 };
 
 export const addExpense = (data: ExpensePayload) => {
-  return API.post<Expense>("/budget/expenses", data);
+  return getAPI().post<Expense>("/budget/expenses", data);
 };
 
 export const deleteExpense = (id: number) => {
-  return API.delete(`/budget/expenses/${id}`);
+  return getAPI().delete(`/budget/expenses/${id}`);
 };
 
 export const EXPENSE_CATEGORIES = [
