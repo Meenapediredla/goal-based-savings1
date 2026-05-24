@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://goal-based-savings-backend.onrender.com/api", // 👈 Hardcode chesey for testing
+  baseURL: "https://goal-based-savings-backend.onrender.com/api", // 👈 Hardcoded
 });
 
 API.interceptors.request.use((config) => {
@@ -16,7 +16,7 @@ API.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.code === "ERR_NETWORK") {
-      console.error("Backend down or CORS issue");
+      console.error("Cannot reach the server");
     } else if (error.response?.status === 401 || error.response?.status === 403) {
       localStorage.clear();
       if (!window.location.pathname.includes("/login")) {
@@ -27,7 +27,49 @@ API.interceptors.response.use(
   }
 );
 
-// 👇 Backend /api/login aithe ila unchali
+// 👇 Interfaces mundhu ravali
+export interface GoalPayload {
+  goalName: string;
+  targetAmount: number;
+  savedAmount: number;
+  deadline: string;
+}
+
+export interface BudgetPlan {
+  id: number;
+  month: string;
+  monthlyIncome: number;
+  monthlyBudgetLimit: number;
+}
+
+export interface Expense {
+  id: number;
+  category: string;
+  amount: number;
+  description?: string;
+  expenseDate: string;
+}
+
+export interface ExpensePayload {
+  category: string;
+  amount: number;
+  description?: string;
+  expenseDate: string;
+}
+
+export const EXPENSE_CATEGORIES = [
+  "Housing",
+  "Food",
+  "Transport",
+  "Utilities",
+  "Health",
+  "Entertainment",
+  "Shopping",
+  "Education",
+  "Other",
+] as const;
+
+// 👇 Auth APIs - Backend /api/login aithe /login vadali
 export const registerUser = (data: { name?: string; email: string; password: string }) => {
   return API.post("/register", data);
 };
@@ -36,7 +78,7 @@ export const loginUser = (data: { email: string; password: string }) => {
   return API.post("/login", data);
 };
 
-// Migilina functions alane unchuko
+// 👇 Goals APIs
 export const createGoal = (data: GoalPayload) => {
   return API.post("/goals", data);
 };
@@ -47,4 +89,29 @@ export const getAllGoals = () => {
 
 export const deleteGoal = (id: number) => {
   return API.delete(`/goals/${id}`);
+};
+
+// 👇 Budget APIs
+export const getBudgetPlan = (month: string) => {
+  return API.get<BudgetPlan>("/budget/plan", { params: { month } });
+};
+
+export const updateBudgetPlan = (data: {
+  month: string;
+  monthlyIncome: number;
+  monthlyBudgetLimit: number;
+}) => {
+  return API.put<BudgetPlan>("/budget/plan", data);
+};
+
+export const getExpenses = (month: string) => {
+  return API.get<Expense[]>("/budget/expenses", { params: { month } });
+};
+
+export const addExpense = (data: ExpensePayload) => {
+  return API.post<Expense>("/budget/expenses", data);
+};
+
+export const deleteExpense = (id: number) => {
+  return API.delete(`/budget/expenses/${id}`);
 };
