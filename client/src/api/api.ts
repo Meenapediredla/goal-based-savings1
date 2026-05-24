@@ -4,29 +4,28 @@ const API = axios.create({
   baseURL: import.meta.env.VITE_API_URL
 });
 
-// Token add chese interceptor - future kosam
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
-// --- Types ---
+// --- Types - antha REQUIRED ga pettam. ? teesesam ---
 export interface Expense {
-  _id?: string;
-  id?: string; 
+  _id: string;
+  id: string; 
   amount: number;
   category: string;
-  date?: string;
-  expenseDate?: string;
+  date: string;
+  expenseDate: string;
   description: string;
 }
 
 export interface BudgetPlan {
-  _id?: string;
+  _id: string;
   month: string;
-  monthlyIncome?: number;
-  monthlyBudgetLimit?: number;
+  monthlyIncome: number;
+  monthlyBudgetLimit: number;
   categories: { name: string; limit: number }[];
 }
 
@@ -69,6 +68,6 @@ export const updateBudgetPlan = (data: any) => API.post("/budget", data);
 
 // --- Expense APIs ---
 export const getExpenses = () => API.get("/expenses");
-export const addExpense = (data: any) => API.post("/expenses", data); // 👈 Idi miss aindi
+export const addExpense = (data: any) => API.post("/expenses", data);
 export const createExpense = (data: any) => API.post("/expenses", data);
-export const deleteExpense = (id: string) => API.delete(`/expenses/${id}`); // 👈 Idi kuda
+export const deleteExpense = (id: string) => API.delete(`/expenses/${id}`);
