@@ -10,7 +10,7 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-// --- Types - antha REQUIRED ga pettam. ? teesesam ---
+// --- Types ---
 export interface Expense {
   _id: string;
   id: string; 
@@ -37,15 +37,9 @@ export interface Goal {
   deadline: string;
 }
 
-// --- Constants ---
 export const EXPENSE_CATEGORIES = [
-  "Food",
-  "Transport", 
-  "Shopping",
-  "Bills",
-  "Entertainment",
-  "Health",
-  "Other"
+  "Food", "Transport", "Shopping", "Bills", 
+  "Entertainment", "Health", "Other"
 ];
 
 // --- Auth APIs ---
@@ -62,12 +56,12 @@ export const createGoal = (data: any) => API.post("/goals", data);
 export const getAllGoals = () => API.get("/goals");
 export const deleteGoal = (id: string) => API.delete(`/goals/${id}`);
 
-// --- Budget APIs ---
-export const getBudgetPlan = () => API.get("/budget");
+// --- Budget APIs - ARGUMENT ADD CHESAM 👇 ---
+export const getBudgetPlan = (month?: string) => API.get("/budget", { params: { month } });
 export const updateBudgetPlan = (data: any) => API.post("/budget", data);
 
-// --- Expense APIs ---
-export const getExpenses = () => API.get("/expenses");
+// --- Expense APIs - ARGUMENT ADD CHESAM 👇 ---
+export const getExpenses = (filter?: any) => API.get("/expenses", { params: filter });
 export const addExpense = (data: any) => API.post("/expenses", data);
 export const createExpense = (data: any) => API.post("/expenses", data);
 export const deleteExpense = (id: string) => API.delete(`/expenses/${id}`);
