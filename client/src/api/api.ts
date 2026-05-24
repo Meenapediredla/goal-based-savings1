@@ -71,11 +71,11 @@ export const EXPENSE_CATEGORIES = [
 
 // 👇 Auth APIs - Backend /api/login aithe /login vadali
 export const registerUser = (data: { name?: string; email: string; password: string }) => {
-  return API.post("/register", data);
+  return API.post("/users/register", data);
 };
 
 export const loginUser = (data: { email: string; password: string }) => {
-  return API.post("/login", data);
+  return API.post("/auth/login", data);
 };
 
 // 👇 Goals APIs
