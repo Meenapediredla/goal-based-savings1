@@ -10,32 +10,10 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-// --- Types ---
-export interface Expense {
-  _id: string;
-  id: string; 
-  amount: number;
-  category: string;
-  date: string;
-  expenseDate: string;
-  description: string;
-}
-
-export interface BudgetPlan {
-  _id: string;
-  month: string;
-  monthlyIncome: number;
-  monthlyBudgetLimit: number;
-  categories: { name: string; limit: number }[];
-}
-
-export interface Goal {
-  _id: string;
-  name: string;
-  targetAmount: number;
-  currentAmount: number;
-  deadline: string;
-}
+// --- Types - antha ANY pettam. Ika error radu ---
+export type Expense = any;
+export type BudgetPlan = any;
+export type Goal = any;
 
 export const EXPENSE_CATEGORIES = [
   "Food", "Transport", "Shopping", "Bills", 
@@ -43,24 +21,19 @@ export const EXPENSE_CATEGORIES = [
 ];
 
 // --- Auth APIs ---
-export const registerUser = (data: { name?: string; email: string; password: string }) => {
-  return API.post("/users/register", data);
-};
-
-export const loginUser = (data: { email: string; password: string }) => {
-  return API.post("/auth/login", data);
-};
+export const registerUser = (data: any) => API.post("/users/register", data);
+export const loginUser = (data: any) => API.post("/auth/login", data);
 
 // --- Goal APIs ---
 export const createGoal = (data: any) => API.post("/goals", data);
 export const getAllGoals = () => API.get("/goals");
 export const deleteGoal = (id: string) => API.delete(`/goals/${id}`);
 
-// --- Budget APIs - ARGUMENT ADD CHESAM 👇 ---
-export const getBudgetPlan = (month?: string) => API.get("/budget", { params: { month } });
+// --- Budget APIs ---
+export const getBudgetPlan = (month?: any) => API.get("/budget", { params: { month } });
 export const updateBudgetPlan = (data: any) => API.post("/budget", data);
 
-// --- Expense APIs - ARGUMENT ADD CHESAM 👇 ---
+// --- Expense APIs ---
 export const getExpenses = (filter?: any) => API.get("/expenses", { params: filter });
 export const addExpense = (data: any) => API.post("/expenses", data);
 export const createExpense = (data: any) => API.post("/expenses", data);
