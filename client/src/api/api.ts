@@ -135,3 +135,7 @@ export const EXPENSE_CATEGORIES = [
   "Education",
   "Other",
 ] as const;
+
+
+
+//additional API functions can be added here as needed, following the same pattern.
