@@ -1,4 +1,4 @@
-# Render Blueprint — matches existing service URL goal-based-savings-backend.onrender.com
+# Render Blueprint — matches existing service URL http://localhost:8080
 services:
   - type: web
     name: goal-based-savings-backend

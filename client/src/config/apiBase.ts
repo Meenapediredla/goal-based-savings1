@@ -22,7 +22,7 @@ export function getApiBaseUrl(): string {
     return normalizeApiUrl(runtimeConfig.apiUrl);
   }
   if (import.meta.env.DEV) {
-    return "/api";
+    return "http://localhost:8080";
   }
   if (typeof window !== "undefined") {
     return window.location.origin;
